@@ -1,13 +1,5 @@
-import { Typography } from "@/src/components/atoms/typography";
-import WrapperScreens from "@/src/components/atoms/wrapper-screens";
-import { COLORS } from "@/src/theme/colors";
+import CrytoScreen from "@/src/components/organisms/cryto-screen";
 
 export default function Index() {
-  return (
-    <WrapperScreens>
-      <Typography color={COLORS.primary} fontSize={18} fontWeight="500">
-        Cryto
-      </Typography>
-    </WrapperScreens>
-  );
+  return <CrytoScreen />;
 }
