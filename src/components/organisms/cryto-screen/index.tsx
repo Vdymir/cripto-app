@@ -26,10 +26,12 @@ import Tab from "../../atoms/tab";
 import { Typography } from "../../atoms/typography";
 import WrapperScreens from "../../atoms/wrapper-screens";
 import CrytoCard from "../../molecules/cryto-card";
+import ErrorScreen from "../../molecules/error-screen";
 import CrytoScreenLoading from "../../molecules/loadings/cryto-screen-loading";
 
 export default function CrytoScreen() {
-  const { data, isLoading, isFetchingNextPage, fetchNextPage } = useGetCryto();
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, error, refetch } =
+    useGetCryto();
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [filterSelected, setFilterSelected] = useState<PercentChange>("1h");
   const [dataFiltered, setDataFiltered] = useState<ICryto[]>([]);
@@ -89,6 +91,10 @@ export default function CrytoScreen() {
 
   if (isLoading) {
     return <CrytoScreenLoading />;
+  }
+
+  if (error) {
+    return <ErrorScreen retry={refetch} />;
   }
 
   return (

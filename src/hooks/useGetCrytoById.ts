@@ -4,7 +4,7 @@ import { ICryto } from "../interfaces/cryto.interface";
 import { getCrytoById } from "../services/cryto.service";
 
 export default function useGetCrytoById(id: string) {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch, isRefetching } = useQuery({
     queryKey: ["crypto", id],
     queryFn: () => getCrytoById(id),
   });
@@ -12,6 +12,7 @@ export default function useGetCrytoById(id: string) {
   return {
     data: crypto,
     error,
-    isLoading,
+    isLoading: isLoading || isRefetching,
+    refetch,
   };
 }

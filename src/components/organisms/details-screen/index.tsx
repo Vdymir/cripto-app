@@ -8,12 +8,13 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Pressable, View } from "react-native";
 import Conditional from "../../atoms/conditional";
 import Row from "../../atoms/row";
+import ErrorScreen from "../../molecules/error-screen";
 import InformationLoading from "../../molecules/loadings/information-loading";
 import TopCryto from "../../molecules/top-cryto";
 
 export default function DetailsScreen() {
   const params: { crytoId: string } = useLocalSearchParams();
-  const { data, isLoading } = useGetCrytoById(params.crytoId);
+  const { data, isLoading, error, refetch } = useGetCrytoById(params.crytoId);
   const { back } = useRouter();
 
   const infoRows = [
@@ -29,6 +30,10 @@ export default function DetailsScreen() {
     { label: "Total Supply", value: data?.tsupply ?? "" },
     { label: "Maximum Supply", value: data?.msupply ?? "" },
   ];
+
+  if (error) {
+    return <ErrorScreen retry={refetch} />;
+  }
 
   return (
     <WrapperScreens>
