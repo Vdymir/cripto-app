@@ -5,8 +5,9 @@ import useGetCrytoById from "@/src/hooks/useGetCrytoById";
 import { COLORS } from "@/src/theme/colors";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, View } from "react-native";
 import Conditional from "../../atoms/conditional";
+import Row from "../../atoms/row";
 import InformationLoading from "../../molecules/loadings/information-loading";
 import TopCryto from "../../molecules/top-cryto";
 
@@ -37,11 +38,11 @@ export default function DetailsScreen() {
         </Conditional.If>
 
         <Conditional.Else>
-          <View style={styles.row}>
+          <Row justifyContent="flex-start" gap={16}>
             <Pressable onPress={back}>
               <AntDesign name="back" size={24} color={COLORS.text} />
             </Pressable>
-            <View style={[styles.row, { gap: 5 }]}>
+            <Row gap={10}>
               <Typography fontSize={24} fontWeight="700" color={COLORS.primary}>
                 {data.name}
               </Typography>
@@ -52,8 +53,8 @@ export default function DetailsScreen() {
               >
                 ({data.symbol})
               </Typography>
-            </View>
-          </View>
+            </Row>
+          </Row>
           <View style={{ marginVertical: 30, gap: 10 }}>
             {infoRows.map((row, index) => (
               <InfoRow key={index} label={row.label} value={row.value} />
@@ -66,11 +67,3 @@ export default function DetailsScreen() {
     </WrapperScreens>
   );
 }
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-  },
-});

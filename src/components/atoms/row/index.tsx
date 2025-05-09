@@ -1,5 +1,5 @@
 import React from "react";
-import { FlexAlignType, View } from "react-native";
+import { DimensionValue, FlexAlignType, View } from "react-native";
 
 interface RowProps {
   children: React.ReactNode | React.ReactNode[];
@@ -12,6 +12,7 @@ interface RowProps {
     | "space-evenly";
   alignItems?: FlexAlignType;
   gap?: string | number;
+  marginTop?: DimensionValue | undefined;
 }
 
 export default function Row({
@@ -19,9 +20,18 @@ export default function Row({
   justifyContent = "space-between",
   alignItems = "center",
   gap,
+  marginTop,
 }: RowProps) {
   return (
-    <View style={{ flexDirection: "row", justifyContent, alignItems, gap }}>
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent,
+        alignItems,
+        gap,
+        marginTop,
+      }}
+    >
       {children}
     </View>
   );

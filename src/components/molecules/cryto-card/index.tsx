@@ -2,6 +2,7 @@ import { ICryto } from "@/src/interfaces/cryto.interface";
 import { COLORS } from "@/src/theme/colors";
 import { useRouter } from "expo-router";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
+import Conditional from "../../atoms/conditional";
 import { Typography } from "../../atoms/typography";
 
 interface CrytoCardProps {
@@ -48,24 +49,32 @@ export default function CrytoCard({
           </Typography>
         </View>
 
-        {rank ? (
-          <Typography
-            fontWeight="bold"
-            fontSize={18}
-            color={COLORS.text_secondary}
-          >
-            RANK #{rank}
-          </Typography>
-        ) : (
-          <View style={{ alignItems: "flex-end" }}>
-            <Typography fontWeight="500" fontSize={16} color={COLORS.text}>
-              ${cryto.price_usd}
+        <Conditional condition={Boolean(rank)}>
+          <Conditional.If>
+            <Typography
+              fontWeight="bold"
+              fontSize={18}
+              color={COLORS.text_secondary}
+            >
+              RANK #{rank}
             </Typography>
-            <Typography fontWeight="400" fontSize={14} color={priceChangeColor}>
-              {priceChange}%
-            </Typography>
-          </View>
-        )}
+          </Conditional.If>
+
+          <Conditional.Else>
+            <View style={{ alignItems: "flex-end" }}>
+              <Typography fontWeight="500" fontSize={16} color={COLORS.text}>
+                ${cryto.price_usd}
+              </Typography>
+              <Typography
+                fontWeight="400"
+                fontSize={14}
+                color={priceChangeColor}
+              >
+                {priceChange}%
+              </Typography>
+            </View>
+          </Conditional.Else>
+        </Conditional>
       </View>
     </TouchableOpacity>
   );
@@ -78,10 +87,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 10,
     paddingHorizontal: 10,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
   },
 });

@@ -21,7 +21,7 @@ export interface ICryto {
   tsupply: null | string;
   msupply: null | string;
 }
-
+export type PercentChange = "1h" | "24h" | "7d";
 export interface Info {
   coins_num: number;
   time: number;
