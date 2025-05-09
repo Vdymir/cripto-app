@@ -1,6 +1,7 @@
 import { ICryto } from "@/src/interfaces/cryto.interface";
 import { COLORS } from "@/src/theme/colors";
 import { useRouter } from "expo-router";
+import { memo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Conditional from "../../atoms/conditional";
 import { Typography } from "../../atoms/typography";
@@ -17,11 +18,7 @@ const PriceChange = {
   "1h": "percent_change_1h",
 };
 
-export default function CrytoCard({
-  cryto,
-  filter = "24h",
-  rank,
-}: CrytoCardProps) {
+function CrytoCard({ cryto, filter = "24h", rank }: CrytoCardProps) {
   const { push } = useRouter();
 
   const priceChange = cryto[PriceChange[filter] as keyof ICryto] as string;
@@ -79,7 +76,7 @@ export default function CrytoCard({
     </TouchableOpacity>
   );
 }
-
+export default memo(CrytoCard);
 const styles = StyleSheet.create({
   main: {
     flexDirection: "row",
