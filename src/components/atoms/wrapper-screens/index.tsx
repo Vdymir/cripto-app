@@ -8,7 +8,7 @@ interface WrapperScreensProps {
 export default function WrapperScreens({ children }: WrapperScreensProps) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ paddingHorizontal: 16 }}>{children}</View>
+      <View style={{ padding: 16 }}>{children}</View>
     </SafeAreaView>
   );
 }

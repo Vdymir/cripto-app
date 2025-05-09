@@ -43,7 +43,7 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="index" />
-        <Stack.Screen name="details" options={{ presentation: "modal" }} />
+        <Stack.Screen name="[crytoId]" options={{ presentation: "modal" }} />
       </Stack>
     </QueryClientProvider>
   );

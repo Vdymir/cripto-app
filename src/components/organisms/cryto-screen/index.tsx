@@ -1,3 +1,5 @@
+import useGetCryto from "@/src/hooks/useGetCryto";
+import { COLORS } from "@/src/theme/colors";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React, { useCallback, useRef, useState } from "react";
 import {
@@ -5,21 +7,22 @@ import {
   FlatList,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  Pressable,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
-
-import useGetCryto from "@/src/hooks/useGetCryto";
-import { COLORS } from "@/src/theme/colors";
+import FloatingButton from "../../atoms/floating-button";
 import { Typography } from "../../atoms/typography";
 import WrapperScreens from "../../atoms/wrapper-screens";
 import CrytoCard from "../../molecules/cryto-card";
+import CrytoScreenLoading from "../../molecules/loadings/cryto-screen-loading";
 
 export default function CrytoScreen() {
   const { data, isLoading, isFetchingNextPage, fetchNextPage } = useGetCryto();
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [filterSelected, setFilterSelected] = useState<"24h" | "7d" | "1h">(
+    "24h"
+  );
   const flatListRef = useRef<FlatList>(null);
 
   const handleScroll = useCallback(
@@ -33,6 +36,10 @@ export default function CrytoScreen() {
   const scrollToTop = useCallback(() => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
   }, []);
+
+  if (isLoading) {
+    return <CrytoScreenLoading />;
+  }
 
   return (
     <WrapperScreens>
@@ -49,9 +56,10 @@ export default function CrytoScreen() {
         data={data}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
+        initialNumToRender={15}
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         renderItem={({ item }) => {
-          return <CrytoCard cryto={item} />;
+          return <CrytoCard cryto={item} filter={filterSelected} />;
         }}
         onEndReachedThreshold={0.5}
         onEndReached={() => {
@@ -70,11 +78,7 @@ export default function CrytoScreen() {
             );
         }}
       />
-      {showScrollButton && (
-        <Pressable style={styles.scrollButton} onPress={scrollToTop}>
-          <AntDesign name="up" size={24} color={COLORS.text} />
-        </Pressable>
-      )}
+      {showScrollButton && <FloatingButton scrollToTop={scrollToTop} />}
     </WrapperScreens>
   );
 }
@@ -85,13 +89,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 20,
-  },
-  scrollButton: {
-    position: "absolute",
-    bottom: 50,
-    right: 10,
-    backgroundColor: COLORS.primary,
-    borderRadius: 100,
-    padding: 10,
   },
 });

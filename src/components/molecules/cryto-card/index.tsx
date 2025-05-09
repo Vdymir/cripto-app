@@ -1,13 +1,13 @@
 import { ICryto } from "@/src/interfaces/cryto.interface";
 import { COLORS } from "@/src/theme/colors";
 import { useRouter } from "expo-router";
-import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Typography } from "../../atoms/typography";
 
 interface CrytoCardProps {
   cryto: ICryto;
   filter?: "24h" | "7d" | "1h";
+  rank?: number;
 }
 
 const PriceChange = {
@@ -16,15 +16,20 @@ const PriceChange = {
   "1h": "percent_change_1h",
 };
 
-export default function CrytoCard({ cryto, filter = "24h" }: CrytoCardProps) {
+export default function CrytoCard({
+  cryto,
+  filter = "24h",
+  rank,
+}: CrytoCardProps) {
   const { push } = useRouter();
+
   const priceChange = cryto[PriceChange[filter] as keyof ICryto] as string;
   const priceChangeColor = !priceChange.includes("-")
     ? COLORS.green
     : COLORS.red;
 
   const handlePress = () => {
-    push("/details");
+    push(`/${cryto.id}`);
   };
 
   return (
@@ -42,18 +47,25 @@ export default function CrytoCard({ cryto, filter = "24h" }: CrytoCardProps) {
             {cryto.symbol}
           </Typography>
         </View>
-        <View
-          style={{
-            alignItems: "flex-end",
-          }}
-        >
-          <Typography fontWeight="500" fontSize={16} color={COLORS.text}>
-            ${cryto.price_usd}
+
+        {rank ? (
+          <Typography
+            fontWeight="bold"
+            fontSize={18}
+            color={COLORS.text_secondary}
+          >
+            RANK #{rank}
           </Typography>
-          <Typography fontWeight="400" fontSize={14} color={priceChangeColor}>
-            {priceChange}%
-          </Typography>
-        </View>
+        ) : (
+          <View style={{ alignItems: "flex-end" }}>
+            <Typography fontWeight="500" fontSize={16} color={COLORS.text}>
+              ${cryto.price_usd}
+            </Typography>
+            <Typography fontWeight="400" fontSize={14} color={priceChangeColor}>
+              {priceChange}%
+            </Typography>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );
